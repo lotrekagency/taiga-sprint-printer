@@ -1,0 +1,17 @@
+<html>
+
+<body>
+    {% for story in stories%}
+    <h2>#{{story.id}}</h2>
+    <h2>{{story.subject}}</h2>
+        {% for task in tasks%}
+            {% if task.user_story == story.id %}
+                {{task.id}}
+                {{task.subject}}
+                <hr>
+            {% endif %}
+        {%endfor%}
+    {% endfor%}
+</body>
+
+</html>
