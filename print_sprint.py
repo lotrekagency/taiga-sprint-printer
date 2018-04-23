@@ -9,15 +9,15 @@ outputFilename=''
 
 # Utility function
 def convertHtmlToPdf():
+    
+
     questions = [
         inquirer.Text('host', message="your taiga api host"),
-        inquirer.Text('project', message="taiga project"),
-        inquirer.Text('sprint', message="your sprint name"),
         inquirer.Text('user', message="your taiga username"),
-        inquirer.Text('password', message="your taiga password"),
-    ]
+        inquirer.Password('password', message="your taiga password"),    ]
 
     answers = inquirer.prompt(questions)
+
     api = TaigaAPI(
         host=answers['host']
     )
@@ -27,15 +27,31 @@ def convertHtmlToPdf():
         password=answers['password']
     )
 
-   
-    prjslug = answers['project']
-    sprint = answers['sprint']
+    # print(projectsList)
+    findproject = [
+        inquirer.Text('project', message="taiga project" ),
+    ]
+
+    findprojectAnswers = inquirer.prompt(findproject)
+    prjslug = findprojectAnswers['project']
+    
+
     project = api.projects.get_by_slug(prjslug)
 
+    milestones = api.milestones.list(project__name=project)
+    milestonesList = []
+    for el in milestones:
+        milestonesList.append(el.name)
+
+    selectsprint = [
+        inquirer.List('sprint', message="Select your sprint", choices=milestonesList ),
+    ]
+    selectsprintAnswer = inquirer.prompt(selectsprint)
+    sprint = selectsprintAnswer['sprint']
 
     tasks = api.tasks.list()
-    milestoneid = api.milestones.list(project=project.id).filter(name=sprint)
-    stories = api.user_stories.list(project=project.id,milestone=milestoneid[0].id)
+    sprint = api.milestones.list(project=project.id).filter(name=sprint)
+    stories = api.user_stories.list(project__name=project,milestone=sprint[0].id)
 
 
     sourceHtml = jinja2.Environment(

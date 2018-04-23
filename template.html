@@ -1,17 +1,37 @@
 <html>
 
+<head>
+    <style>
+        @page {
+            size: a4 portrait;
+        }
+        /* table { -pdf-keep-with-next: true; } */
+          
+                
+        
+    </style>
+</head>
+
 <body>
+    <table>
+       
     {% for story in stories%}
-    <h2>#{{story.id}}</h2>
-    <h2>{{story.subject}}</h2>
-        {% for task in tasks%}
-            {% if task.user_story == story.id %}
-                {{task.id}}
-                {{task.subject}}
-                <hr>
-            {% endif %}
-        {%endfor%}
+    <tr>
+        <td>
+            <h2>#{{story.id}}</h2>
+            <h2>{{story.subject}}</h2>
+        </td>
+            {% for task in tasks%}
+                {% if task.user_story == story.id %}
+                    <td>
+                        {{task.id}}
+                        {{task.subject}}
+                    </td>
+                {% endif %}
+            {%endfor%}
+    </tr>
     {% endfor%}
+    </table>
 </body>
 
 </html>
