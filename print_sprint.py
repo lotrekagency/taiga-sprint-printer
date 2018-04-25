@@ -1,5 +1,5 @@
 from taiga import TaigaAPI
-from xhtml2pdf import pisa
+from weasyprint import HTML
 from datetime import date
 import jinja2
 import inquirer
@@ -10,7 +10,6 @@ outputFilename=''
 # Utility function
 def convertHtmlToPdf():
     
-
     questions = [
         inquirer.Text('host', message="your taiga api host"),
         inquirer.Text('user', message="your taiga username"),
@@ -64,17 +63,14 @@ def convertHtmlToPdf():
     resultFile = open(outputFilename, "w+b")
 
     # convert HTML to PDF
-    pisaStatus = pisa.CreatePDF(
-            sourceHtml,                # the HTML to convert
-            dest=resultFile)           # file handle to recieve result
+    pdf = HTML(string=sourceHtml).write_pdf(resultFile)
+
 
     # close output file
     resultFile.close()                 # close output file
 
     # return True on success and False on errors
-    return pisaStatus.err
 
 # Main program
 if __name__ == "__main__":
-    pisa.showLogging()
     convertHtmlToPdf()

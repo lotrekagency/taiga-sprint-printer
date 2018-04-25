@@ -2,36 +2,40 @@
 
 <head>
     <style>
-        @page {
-            size: a4 portrait;
-        }
-        /* table { -pdf-keep-with-next: true; } */
-          
-                
+       body{
+          font-family: sans-serif;
+       }
+
+       .card{
+           width: 50%;
+           box-sizing: border-box;
+           float: left;
+           height: 225pt;
+           padding:1rem;
+           border:1px dashed;
+       }
         
     </style>
 </head>
 
 <body>
-    <table>
+    
        
     {% for story in stories%}
-    <tr>
-        <td>
+ 
+        <div class="card"> 
             <h2>#{{story.id}}</h2>
             <h2>{{story.subject}}</h2>
-        </td>
+        </div>
             {% for task in tasks%}
                 {% if task.user_story == story.id %}
-                    <td>
-                        {{task.id}}
-                        {{task.subject}}
-                    </td>
+                    <div class="card">
+                        <h2>{{task.id}}</h2>
+                        <h3>{{task.subject}}</h3>
+                    </div>
                 {% endif %}
             {%endfor%}
-    </tr>
     {% endfor%}
-    </table>
 </body>
 
 </html>
