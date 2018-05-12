@@ -1,11 +1,12 @@
-from taiga import TaigaAPI
-from weasyprint import HTML
-from datetime import date
 import jinja2
 import inquirer
 
+from datetime import date
+from taiga import TaigaAPI
+from weasyprint import HTML
 
-def convertHtmlToPdf():
+
+def print_sprint():
 
     sourceHtml = ''
     outputFilename = ''
@@ -34,7 +35,6 @@ def convertHtmlToPdf():
     findprojectAnswers = inquirer.prompt(findproject)
     prjslug = findprojectAnswers['project']
     
-
     project = api.projects.get_by_slug(prjslug)
 
     milestones = api.milestones.list(project__name=project)
@@ -44,7 +44,11 @@ def convertHtmlToPdf():
         milestonesList.append(el.name)
 
     selectsprint = [
-        inquirer.List('sprint', message="Select your sprint", choices=milestonesList ),
+        inquirer.List(
+            'sprint', 
+            message="Select the sprint you want to print", 
+            choices=milestonesList 
+        ),
     ]
 
     selectsprintAnswer = inquirer.prompt(selectsprint)
@@ -52,24 +56,18 @@ def convertHtmlToPdf():
 
     tasks = api.tasks.list()
     sprint = api.milestones.list(project=project.id).filter(name=sprint)
-    stories = api.user_stories.list(project__name=project,milestone=sprint[0].id)
+    stories = api.user_stories.list(project__name=project, milestone=sprint[0].id)
 
     sourceHtml = jinja2.Environment(
-        loader=jinja2.FileSystemLoader(searchpath='')).get_template(
-        'template.html').render(date=date.today().strftime('%d, %b %Y'),
-                                    stories=stories,tasks=tasks)
+        loader=jinja2.FileSystemLoader(searchpath='')
+    ).get_template('templates/template.html').render(
+        date=date.today().strftime('%d, %b %Y'),
+        stories=stories,
+        tasks=tasks
+    )
     
     outputFilename = "test.pdf"
-    # open output file for writing (truncated binary)
+
     resultFile = open(outputFilename, "w+b")
-
-    # convert HTML to PDF
     pdf = HTML(string=sourceHtml).write_pdf(resultFile)
-
-    # close output file
     resultFile.close()
-
-
-# Main program
-if __name__ == "__main__":
-    convertHtmlToPdf()
