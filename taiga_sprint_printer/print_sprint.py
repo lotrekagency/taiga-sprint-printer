@@ -13,8 +13,6 @@ def get_current_dir():
 
 def print_sprint():
 
-    sourceHtml = ''
-    outputFilename = ''
     templates_path = os.path.join(get_current_dir(), 'templates')
     
     questions = [
@@ -72,8 +70,6 @@ def print_sprint():
         tasks=tasks
     )
     
-    outputFilename = "test.pdf"
-
-    resultFile = open(outputFilename, "w+b")
+    resultFile = open("test.pdf", "w+b")
     pdf = HTML(string=sourceHtml).write_pdf(resultFile)
     resultFile.close()
