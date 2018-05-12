@@ -1,9 +1,13 @@
 from setuptools import setup, find_packages
 
+
+package_data = ['templates/*.html']
+
 setup(
     name='taiga_sprint_printer',
     version='0.0.0',
     url='https://github.com/lotrekagency/taiga-sprint-printer',
+    package_data={'taiga_sprint_printer': package_data},
     install_requires=[
         'python-taiga==0.9.0',
         'WeasyPrint==0.42.3',

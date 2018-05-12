@@ -1,15 +1,21 @@
 import jinja2
 import inquirer
+import os
 
 from datetime import date
 from taiga import TaigaAPI
 from weasyprint import HTML
 
 
+def get_current_dir():
+    return os.path.split(__file__)[0]
+
+
 def print_sprint():
 
     sourceHtml = ''
     outputFilename = ''
+    templates_path = os.path.join(get_current_dir(), 'templates')
     
     questions = [
         inquirer.Text('host', message="Your taiga api host"),
@@ -59,8 +65,8 @@ def print_sprint():
     stories = api.user_stories.list(project__name=project, milestone=sprint[0].id)
 
     sourceHtml = jinja2.Environment(
-        loader=jinja2.FileSystemLoader(searchpath='')
-    ).get_template('templates/template.html').render(
+        loader=jinja2.FileSystemLoader(searchpath=templates_path)
+    ).get_template('sprinttmp.html').render(
         date=date.today().strftime('%d, %b %Y'),
         stories=stories,
         tasks=tasks
