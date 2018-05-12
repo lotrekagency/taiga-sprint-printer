@@ -4,16 +4,17 @@ from datetime import date
 import jinja2
 import inquirer
 
-sourceHtml=''
-outputFilename=''
 
-# Utility function
 def convertHtmlToPdf():
+
+    sourceHtml = ''
+    outputFilename = ''
     
     questions = [
-        inquirer.Text('host', message="your taiga api host"),
-        inquirer.Text('user', message="your taiga username"),
-        inquirer.Password('password', message="your taiga password"),    ]
+        inquirer.Text('host', message="Your taiga api host"),
+        inquirer.Text('user', message="Your taiga username"),
+        inquirer.Password('password', message="Your taiga password"),    
+    ]
 
     answers = inquirer.prompt(questions)
 
@@ -26,7 +27,6 @@ def convertHtmlToPdf():
         password=answers['password']
     )
 
-    # print(projectsList)
     findproject = [
         inquirer.Text('project', message="taiga project" ),
     ]
@@ -39,19 +39,20 @@ def convertHtmlToPdf():
 
     milestones = api.milestones.list(project__name=project)
     milestonesList = []
+
     for el in milestones:
         milestonesList.append(el.name)
 
     selectsprint = [
         inquirer.List('sprint', message="Select your sprint", choices=milestonesList ),
     ]
+
     selectsprintAnswer = inquirer.prompt(selectsprint)
     sprint = selectsprintAnswer['sprint']
 
     tasks = api.tasks.list()
     sprint = api.milestones.list(project=project.id).filter(name=sprint)
     stories = api.user_stories.list(project__name=project,milestone=sprint[0].id)
-
 
     sourceHtml = jinja2.Environment(
         loader=jinja2.FileSystemLoader(searchpath='')).get_template(
@@ -65,11 +66,9 @@ def convertHtmlToPdf():
     # convert HTML to PDF
     pdf = HTML(string=sourceHtml).write_pdf(resultFile)
 
-
     # close output file
-    resultFile.close()                 # close output file
+    resultFile.close()
 
-    # return True on success and False on errors
 
 # Main program
 if __name__ == "__main__":

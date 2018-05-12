@@ -1,41 +1,39 @@
 <html>
-
-<head>
-    <style>
-       body{
-          font-family: sans-serif;
-       }
-
-       .card{
-           width: 50%;
-           box-sizing: border-box;
-           float: left;
-           height: 225pt;
-           padding:1rem;
-           border:1px dashed;
-       }
-        
-    </style>
-</head>
-
-<body>
     
-       
-    {% for story in stories%}
- 
-        <div class="card"> 
-            <h2>#{{story.id}}</h2>
-            <h2>{{story.subject}}</h2>
-        </div>
-            {% for task in tasks%}
-                {% if task.user_story == story.id %}
-                    <div class="card">
-                        <h2>{{task.id}}</h2>
-                        <h3>{{task.subject}}</h3>
-                    </div>
-                {% endif %}
-            {%endfor%}
-    {% endfor%}
-</body>
+    <head>
+        <style>
+        body{
+            font-family: sans-serif;
+        }
+
+        .card{
+            width: 50%;
+            box-sizing: border-box;
+            float: left;
+            height: 225pt;
+            padding:1rem;
+            border:1px dashed;
+        }
+            
+        </style>
+    </head>
+
+    <body>
+        {% for story in stories%}
+    
+            <div class="card"> 
+                <h2>#{{story.id}}</h2>
+                <h2>{{story.subject}}</h2>
+            </div>
+                {% for task in tasks%}
+                    {% if task.user_story == story.id %}
+                        <div class="card">
+                            <h2>{{task.id}}</h2>
+                            <h3>{{task.subject}}</h3>
+                        </div>
+                    {% endif %}
+                {%endfor%}
+        {% endfor%}
+    </body>
 
 </html>
