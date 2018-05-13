@@ -6,12 +6,16 @@ from datetime import date
 from taiga import TaigaAPI
 from weasyprint import HTML
 
+from .configuration import Configuration
+
 
 def get_current_dir():
     return os.path.split(__file__)[0]
 
 
 def print_sprint():
+
+    configuration = Configuration()
 
     templates_path = os.path.join(get_current_dir(), 'templates')
     
@@ -67,9 +71,9 @@ def print_sprint():
     ).get_template('sprinttmp.html').render(
         date=date.today().strftime('%d, %b %Y'),
         stories=stories,
-        tasks=tasks
+        tasks=tasks,
+        config=configuration.get_config()
     )
     
-    resultFile = open("test.pdf", "w+b")
-    pdf = HTML(string=sourceHtml).write_pdf(resultFile)
-    resultFile.close()
+    with open("test.pdf", "w+b") as f:
+        pdf = HTML(string=sourceHtml).write_pdf(f)
