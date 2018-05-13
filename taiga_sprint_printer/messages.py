@@ -13,14 +13,18 @@ class BColors:
 def colored_message(color, message):
     return '{0}{1}{2}'.format(color, message, BColors.ENDC)
 
+
 def success_message(message):
     return '{0} {1}'.format(colored_message(BColors.OKGREEN, 'success'), message)
+
 
 def warning_message(message):
     return '{0} {1}'.format(colored_message(BColors.WARNING, 'warning'), message)
 
+
 def error_message(message):
     return '{0} {1}'.format(colored_message(BColors.FAIL, 'error'), message)
+
 
 def progress_message(complete, total, message):
     return '[{0}/{1}] {2}'.format(complete, total, message)

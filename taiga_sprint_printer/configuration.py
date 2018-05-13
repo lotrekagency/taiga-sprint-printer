@@ -26,5 +26,15 @@ class Configuration():
         self._config.read(self._user_config)
         return self._config
 
+    def set_config(self, section, attribute, value):
+        self._config.read(self._user_config)
+        if not self._config.has_section(section):
+            self._config.add_section(section)
+        self._config[section][attribute] = value
+
+        with open(self._user_config, 'w') as f:
+            self._config.write(f)
+        return self._config
+
     def set_section(self, section, value):
         pass
