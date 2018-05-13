@@ -3,7 +3,7 @@
 
 ## Install (not available yet)
 
-🐍 You need `Python 3` to run this program
+🐍 You need `Python3` to run this program
 
     pip install taiga-sprint-printer
 
@@ -13,7 +13,7 @@
 
 ## Set the color for user stories and tasks
 
-Taiga sprint printer has two default colors, `red` for user stories and `blue` for tasks. If you want to change these values run:
+Taiga sprint printer has two default colors, 🔴`red` for user stories and 🔵`blue` for tasks. If you want to change these values run:
 
     sprint-printer colors
 
