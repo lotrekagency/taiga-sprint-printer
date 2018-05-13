@@ -4,9 +4,11 @@ import os
 
 from datetime import date
 from taiga import TaigaAPI
+from taiga.exceptions import TaigaException
 from weasyprint import HTML
 
 from .configuration import Configuration
+from .messages import success_message, warning_message, error_message, progress_message
 
 
 def get_current_dir():
@@ -27,14 +29,19 @@ def print_sprint():
 
     answers = inquirer.prompt(questions)
 
-    api = TaigaAPI(
-        host=answers['host']
-    )
+    try:
+        api = TaigaAPI(
+            host=answers['host']
+        )
 
-    api.auth(
-        username=answers['user'],
-        password=answers['password']
-    )
+        api.auth(
+            username=answers['user'],
+            password=answers['password']
+        )
+        # Store username and host
+    except TaigaException as ex:
+        print(error_message(str(ex)))
+        return 1
 
     findproject = [
         inquirer.Text('project', message="taiga project" ),
@@ -43,10 +50,14 @@ def print_sprint():
     findprojectAnswers = inquirer.prompt(findproject)
     prjslug = findprojectAnswers['project']
     
-    project = api.projects.get_by_slug(prjslug)
+    try:
+        project = api.projects.get_by_slug(prjslug)
 
-    milestones = api.milestones.list(project__name=project)
-    milestonesList = []
+        milestones = api.milestones.list(project__name=project)
+        milestonesList = []
+    except TaigaException as ex:
+        print(error_message(str(ex)))
+        return 1
 
     for el in milestones:
         milestonesList.append(el.name)
@@ -62,9 +73,18 @@ def print_sprint():
     selectsprintAnswer = inquirer.prompt(selectsprint)
     sprint = selectsprintAnswer['sprint']
 
-    tasks = api.tasks.list()
-    sprint = api.milestones.list(project=project.id).filter(name=sprint)
-    stories = api.user_stories.list(project__name=project, milestone=sprint[0].id)
+    try:
+        print (progress_message(0, 4, '📅  Fetching the sprint'))
+        sprint = api.milestones.list(project=project.id).filter(name=sprint)
+        print (progress_message(1, 4, '📗  Fetching stories'))
+        stories = api.user_stories.list(project__name=project, milestone=sprint[0].id)
+        print (progress_message(2, 4, '📄  Fetching tasks'))
+        tasks = api.tasks.list()
+    except TaigaException as ex:
+        print(error_message(str(ex)))
+        return 1
+
+    print (progress_message(3, 4, '🎨  Start rendering the template'))
 
     sourceHtml = jinja2.Environment(
         loader=jinja2.FileSystemLoader(searchpath=templates_path)
@@ -74,6 +94,10 @@ def print_sprint():
         tasks=tasks,
         config=configuration.get_config()
     )
+
+    print (progress_message(4, 4, '👷🏻  Generating the pdf'))
     
     with open("test.pdf", "w+b") as f:
         pdf = HTML(string=sourceHtml).write_pdf(f)
+
+    print (success_message('Done! The pdf is ready to be printed'))
