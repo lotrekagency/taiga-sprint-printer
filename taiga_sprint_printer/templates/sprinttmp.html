@@ -34,7 +34,7 @@
                 <h1>US #{{story.id}}</h1>
                 <h2>{{story.subject}}</h2>
             </div>
-                {% for task in tasks%}
+                {% for task in tasks %}
                     {% if task.user_story == story.id %}
                         <div class="card task">
                             <h1>TASK #{{task.id}}</h1>

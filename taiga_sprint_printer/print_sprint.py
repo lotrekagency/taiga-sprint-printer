@@ -79,7 +79,9 @@ def print_sprint():
         print (progress_message(1, 4, '📗  Fetching stories'))
         stories = api.user_stories.list(project__name=project, milestone=sprint[0].id)
         print (progress_message(2, 4, '📄  Fetching tasks'))
-        tasks = api.tasks.list()
+        tasks = []
+        for story in stories:
+            tasks.extend(story.list_tasks())
     except TaigaException as ex:
         print(error_message(str(ex)))
         return 1
