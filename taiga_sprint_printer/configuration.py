@@ -24,12 +24,15 @@ class Configuration():
 
     def get_config(self, section=None, attribute=None):
         self._config.read(self._user_config)
-        if section and not attribute:
-            return self._config[section]
-        elif section and attribute:
-            return self._config[section][attribute]
-        else:
-            return self._config
+        try:
+            if section and not attribute:
+                return self._config[section]
+            elif section and attribute:
+                return self._config[section][attribute]
+            else:
+                return self._config
+        except KeyError:
+            return None
 
     def set_config(self, section, attribute, value):
         self._config.read(self._user_config)
