@@ -13,45 +13,79 @@ from .configuration import Configuration
 from .messages import success_message, warning_message, error_message, progress_message
 
 
-def get_current_dir():
+def _get_current_dir():
     return os.path.split(__file__)[0]
+
+
+def _ask_credentials():
+    questions = [
+        inquirer.Text('host', message="Your taiga api host"),
+        inquirer.Text('user', message="Your taiga username"),
+        inquirer.Password('password', message="Your taiga password"),    
+    ]
+    answers = inquirer.prompt(questions)
+    return answers['host'], answers['user'], answers['password']
+
+
+def _ask_password(current_user):
+    questions = [
+        inquirer.Password('password', message="Taiga password for {0}".format(current_user)),    
+    ]
+    answers = inquirer.prompt(questions)
+    return answers['password']
+
+
+def _ask_project(current_project):
+    findproject = [
+        inquirer.Text('project', message="Taiga project", default=current_project ),
+    ]
+    answers = inquirer.prompt(findproject)
+    return answers['project']
+
+
+def _ask_sprint(milestones_list):
+    selectsprint = [
+        inquirer.List(
+            'sprint', 
+            message="Select the sprint you want to print", 
+            choices=milestones_list 
+        ),
+    ]
+    answers = inquirer.prompt(selectsprint)
+    return answers['sprint']
 
 
 def print_sprint():
 
     configuration = Configuration()
 
-    templates_path = os.path.join(get_current_dir(), 'templates')
-    
-    questions = [
-        inquirer.Text('host', message="Your taiga api host"),
-        inquirer.Text('user', message="Your taiga username"),
-        inquirer.Password('password', message="Your taiga password"),    
-    ]
+    host = configuration.get_config('taiga', 'host')
+    user = configuration.get_config('taiga', 'user')
 
-    answers = inquirer.prompt(questions)
+    templates_path = os.path.join(_get_current_dir(), 'templates')
+    
+    if host and user:
+        password = _ask_password(user)
+    else:
+        host, user, password = _ask_credentials()
 
     try:
         api = TaigaAPI(
-            host=answers['host']
+            host=host
         )
-
         api.auth(
-            username=answers['user'],
-            password=answers['password']
+            username=user,
+            password=password
         )
-        configuration.set_config('taiga', 'host', answers['host'])
-        configuration.set_config('taiga', 'user', answers['user'])
+        configuration.set_config('taiga', 'host', host)
+        configuration.set_config('taiga', 'user', user)
     except TaigaException as ex:
         print(error_message(str(ex)))
         return 1
 
-    findproject = [
-        inquirer.Text('project', message="taiga project" ),
-    ]
-
-    answers = inquirer.prompt(findproject)
-    project_slug = answers['project']
+    project_slug = _ask_project(
+        configuration.get_config('taiga', 'project')
+    )
     
     try:
         project = api.projects.get_by_slug(project_slug)
@@ -65,16 +99,7 @@ def print_sprint():
     for el in milestones:
         milestones_list.append(el.name)
 
-    selectsprint = [
-        inquirer.List(
-            'sprint', 
-            message="Select the sprint you want to print", 
-            choices=milestones_list 
-        ),
-    ]
-
-    answers = inquirer.prompt(selectsprint)
-    selected_sprint = answers['sprint']
+    selected_sprint = _ask_sprint(milestones_list)
 
     try:
         print (progress_message(1, 5, '📅  Fetching the sprint'))

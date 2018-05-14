@@ -22,9 +22,14 @@ class Configuration():
             with open(self._user_config, 'w') as f:
                 self._config.write(f)
 
-    def get_config(self):
+    def get_config(self, section=None, attribute=None):
         self._config.read(self._user_config)
-        return self._config
+        if section and not attribute:
+            return self._config[section]
+        elif section and attribute:
+            return self._config[section][attribute]
+        else:
+            return self._config
 
     def set_config(self, section, attribute, value):
         self._config.read(self._user_config)
@@ -35,6 +40,3 @@ class Configuration():
         with open(self._user_config, 'w') as f:
             self._config.write(f)
         return self._config
-
-    def set_section(self, section, value):
-        pass
