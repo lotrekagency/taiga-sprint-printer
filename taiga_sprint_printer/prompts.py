@@ -33,6 +33,19 @@ def ask_project(current_project):
     return answers['project']
 
 
+def ask_file_destination():
+    findproject = [
+        inquirer.Text(
+            'file_destination',
+            message="File destination",
+        ),
+    ]
+    answers = inquirer.prompt(findproject)
+    file_destination = answers['file_destination']
+    if not file_destination.endswith('.pdf'):
+        file_destination = file_destination + '.pdf'
+    return file_destination
+
 def ask_sprint(milestones_list):
     selectsprint = [
         inquirer.List(

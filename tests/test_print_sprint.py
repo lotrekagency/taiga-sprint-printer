@@ -1,6 +1,8 @@
 import os
 import shutil
 
+from pathlib import Path
+
 from taiga.models.base import SearchableList
 from taiga.models import UserStory, Task
 
@@ -22,6 +24,7 @@ class TestConfiguration:
         self.mocked_ask_password = mocker.patch('taiga_sprint_printer.print_sprint.ask_password')
         self.mocked_ask_project = mocker.patch('taiga_sprint_printer.print_sprint.ask_project')
         self.mocked_ask_sprint = mocker.patch('taiga_sprint_printer.print_sprint.ask_sprint')
+        self.mocked_ask_file_destination = mocker.patch('taiga_sprint_printer.print_sprint.ask_file_destination')
 
     def _mock_expanduser(self, mocker):
         mocked_expanduser = mocker.patch('taiga_sprint_printer.configuration.os.path.expanduser')
@@ -90,6 +93,8 @@ class TestConfiguration:
 
         self.mocked_ask_project.return_value = 'Project 1'
         self.mocked_ask_sprint.return_value = 'Sprint 1'
+
+        self.mocked_ask_file_destination.return_value = 'tests/generatedstuff/test.pdf'
 
         milestones = SearchableList()
         milestones.append(Mock())

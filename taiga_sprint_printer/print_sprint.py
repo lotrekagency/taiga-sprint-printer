@@ -11,7 +11,7 @@ from weasyprint import HTML
 from .configuration import Configuration
 from .messages import success_message, error_message, progress_message
 
-from .prompts import ask_credentials, ask_password, ask_project, ask_sprint
+from .prompts import ask_credentials, ask_password, ask_project, ask_sprint, ask_file_destination
 from .utils import get_current_dir
 
 
@@ -61,6 +61,10 @@ def print_sprint():
 
     selected_sprint = ask_sprint(milestones_list)
 
+    file_destination = ask_file_destination()
+
+    os.makedirs(os.path.dirname(file_destination), exist_ok=True)
+
     try:
         print(progress_message(1, 5, '📅  Fetching the sprint'))
         sprint = milestones.filter(name=selected_sprint)
@@ -99,7 +103,7 @@ def print_sprint():
 
     print(progress_message(5, 5, '👷🏻  Generating the pdf'))
 
-    with open("test.pdf", "w+b") as f:
+    with open(file_destination, "w+b") as f:
         HTML(string=sourceHtml).write_pdf(f)
 
     print(success_message('Done! The pdf is ready to be printed 🖨'))
