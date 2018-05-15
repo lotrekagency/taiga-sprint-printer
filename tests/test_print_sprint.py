@@ -1,10 +1,14 @@
 import os
 import shutil
 
+
+
 from taiga.exceptions import TaigaException
 
 from taiga_sprint_printer.configuration import Configuration
 from taiga_sprint_printer.print_sprint import print_sprint
+
+from unittest.mock import Mock
 
 
 class TestConfiguration:
@@ -52,7 +56,7 @@ class TestConfiguration:
         self.mocked_ask_password.return_value = '1t54s3cr3t'
 
         assert print_sprint() == 1
-        
+
         self.mocked_ask_credentials.assert_not_called()
         self.mocked_ask_password.assert_called()
 
@@ -72,3 +76,53 @@ class TestConfiguration:
         c = Configuration()
         assert c.get_config('taiga', 'host') == 'https://newhosttaiga.io/'
         assert c.get_config('taiga', 'user') == 'astagiuser'
+
+
+    def test_print_sprint(self, mocker):
+        self._mock_expanduser(mocker)
+        self._mock_prompts(mocker)
+
+        c = Configuration()
+        c.set_config('taiga', 'host', 'https://notexistingtaiga.io/')
+        c.set_config('taiga', 'user', 'astagi')
+
+        self.mocked_ask_password.return_value = '1t54s3cr3t'
+        taiga_api = mocker.patch('taiga_sprint_printer.print_sprint.TaigaAPI')
+
+        self.mocked_ask_project.return_value = 'Project 1'
+        self.mocked_ask_sprint.return_value = 'Sprint 1'
+
+        from taiga.models.base import SearchableList
+        from taiga.models import UserStory, Task
+
+        milestones = SearchableList()
+        milestones.append(Mock())
+        milestones.append(Mock())
+        milestones[0].name = 'Sprint 1'
+        milestones[0].id = 'sprint_1'
+        milestones[1].name = 'Sprint 2'
+        milestones[1].id = 'sprint_2'
+
+        taiga_api.return_value.milestones.list.return_value = milestones
+
+        stories = [
+            UserStory(taiga_api, subject='Story 1'),
+            UserStory(taiga_api, subject='Story 2')
+        ]
+
+        def mock_list_task():
+            return [
+                Task(None, subject='Task 1')
+            ]
+
+        stories[0].list_tasks = mock_list_task
+
+        stories[1].list_tasks = mock_list_task
+
+        taiga_api.return_value.user_stories.list.return_value = stories
+
+        assert print_sprint() == 0
+
+        taiga_api.return_value.user_stories.list.side_effect = TaigaException()
+
+        assert print_sprint() == 1
