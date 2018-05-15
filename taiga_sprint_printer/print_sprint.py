@@ -9,7 +9,7 @@ from taiga.exceptions import TaigaException
 from weasyprint import HTML
 
 from .configuration import Configuration
-from .messages import success_message, warning_message, error_message, progress_message
+from .messages import success_message, error_message, progress_message
 
 from .prompts import ask_credentials, ask_password, ask_project, ask_sprint
 from .utils import get_current_dir
@@ -23,7 +23,7 @@ def print_sprint():
     user = configuration.get_config('taiga', 'user')
 
     templates_path = os.path.join(get_current_dir(), 'templates')
-    
+
     if host and user:
         password = ask_password(user)
     else:
@@ -46,7 +46,7 @@ def print_sprint():
     project_slug = ask_project(
         configuration.get_config('taiga', 'project')
     )
-    
+
     try:
         project = api.projects.get_by_slug(project_slug)
         milestones = api.milestones.list(project__name=project)
@@ -62,10 +62,15 @@ def print_sprint():
     selected_sprint = ask_sprint(milestones_list)
 
     try:
-        print (progress_message(1, 5, '📅  Fetching the sprint'))
-        sprint = api.milestones.list(project=project.id).filter(name=selected_sprint)
-        print (progress_message(2, 5, '📗  Fetching stories'))
-        stories = api.user_stories.list(project__name=project, milestone=sprint[0].id)
+        print(progress_message(1, 5, '📅  Fetching the sprint'))
+        sprint = api.milestones.list(
+            project=project.id
+        ).filter(name=selected_sprint)
+        print(progress_message(2, 5, '📗  Fetching stories'))
+        stories = api.user_stories.list(
+            project__name=project,
+            milestone=sprint[0].id
+        )
         tasks = []
         us_tasks_completed = 0
         for i, story in enumerate(stories):
@@ -73,8 +78,9 @@ def print_sprint():
             if (i + 1) == len(stories):
                 end_charcater = '\n'
             us_tasks_completed = math.ceil(((i + 1) / len(stories)) * 100)
-            print (progress_message(
-                3, 5, '📄  Fetching tasks for stories {0}%'.format(us_tasks_completed)
+            print(progress_message(
+                3, 5,
+                '📄  Fetching tasks for stories {0}%'.format(us_tasks_completed)
             ), end=end_charcater)
             sys.stdout.flush()
             tasks.extend(story.list_tasks())
@@ -82,7 +88,7 @@ def print_sprint():
         print(error_message(str(ex)))
         return 1
 
-    print (progress_message(4, 5, '🎨  Start rendering the template'))
+    print(progress_message(4, 5, '🎨  Start rendering the template'))
 
     sourceHtml = jinja2.Environment(
         loader=jinja2.FileSystemLoader(searchpath=templates_path)
@@ -93,11 +99,11 @@ def print_sprint():
         config=configuration.get_config()
     )
 
-    print (progress_message(5, 5, '👷🏻  Generating the pdf'))
-    
-    with open("test.pdf", "w+b") as f:
-        pdf = HTML(string=sourceHtml).write_pdf(f)
+    print(progress_message(5, 5, '👷🏻  Generating the pdf'))
 
-    print (success_message('Done! The pdf is ready to be printed 🖨'))
-    
+    with open("test.pdf", "w+b") as f:
+        HTML(string=sourceHtml).write_pdf(f)
+
+    print(success_message('Done! The pdf is ready to be printed 🖨'))
+
     return 0

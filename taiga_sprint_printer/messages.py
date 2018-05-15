@@ -15,15 +15,21 @@ def colored_message(color, message):
 
 
 def success_message(message):
-    return '{0} {1}'.format(colored_message(BColors.OKGREEN, 'success'), message)
+    return '{0} {1}'.format(
+        colored_message(BColors.OKGREEN, 'success'), message
+    )
 
 
 def warning_message(message):
-    return '{0} {1}'.format(colored_message(BColors.WARNING, 'warning'), message)
+    return '{0} {1}'.format(
+        colored_message(BColors.WARNING, 'warning'), message
+    )
 
 
 def error_message(message):
-    return '{0} {1}'.format(colored_message(BColors.FAIL, 'error'), message)
+    return '{0} {1}'.format(
+        colored_message(BColors.FAIL, 'error'), message
+    )
 
 
 def progress_message(complete, total, message):

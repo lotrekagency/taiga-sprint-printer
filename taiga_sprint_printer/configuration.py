@@ -1,4 +1,5 @@
-import os, shutil, configparser
+import configparser
+import os
 
 
 class Configuration():
