@@ -1,5 +1,4 @@
 import jinja2
-import inquirer
 import math
 import os
 import sys
@@ -12,47 +11,8 @@ from weasyprint import HTML
 from .configuration import Configuration
 from .messages import success_message, warning_message, error_message, progress_message
 
-
-def _get_current_dir():
-    return os.path.split(__file__)[0]
-
-
-def _ask_credentials():
-    questions = [
-        inquirer.Text('host', message="Your taiga api host"),
-        inquirer.Text('user', message="Your taiga username"),
-        inquirer.Password('password', message="Your taiga password"),    
-    ]
-    answers = inquirer.prompt(questions)
-    return answers['host'], answers['user'], answers['password']
-
-
-def _ask_password(current_user):
-    questions = [
-        inquirer.Password('password', message="Taiga password for {0}".format(current_user)),    
-    ]
-    answers = inquirer.prompt(questions)
-    return answers['password']
-
-
-def _ask_project(current_project):
-    findproject = [
-        inquirer.Text('project', message="Taiga project", default=current_project ),
-    ]
-    answers = inquirer.prompt(findproject)
-    return answers['project']
-
-
-def _ask_sprint(milestones_list):
-    selectsprint = [
-        inquirer.List(
-            'sprint', 
-            message="Select the sprint you want to print", 
-            choices=milestones_list 
-        ),
-    ]
-    answers = inquirer.prompt(selectsprint)
-    return answers['sprint']
+from .prompts import ask_credentials, ask_password, ask_project, ask_sprint
+from .utils import get_current_dir
 
 
 def print_sprint():
@@ -62,12 +22,12 @@ def print_sprint():
     host = configuration.get_config('taiga', 'host')
     user = configuration.get_config('taiga', 'user')
 
-    templates_path = os.path.join(_get_current_dir(), 'templates')
+    templates_path = os.path.join(get_current_dir(), 'templates')
     
     if host and user:
-        password = _ask_password(user)
+        password = ask_password(user)
     else:
-        host, user, password = _ask_credentials()
+        host, user, password = ask_credentials()
 
     try:
         api = TaigaAPI(
@@ -83,7 +43,7 @@ def print_sprint():
         print(error_message(str(ex)))
         return 1
 
-    project_slug = _ask_project(
+    project_slug = ask_project(
         configuration.get_config('taiga', 'project')
     )
     
@@ -99,7 +59,7 @@ def print_sprint():
     for el in milestones:
         milestones_list.append(el.name)
 
-    selected_sprint = _ask_sprint(milestones_list)
+    selected_sprint = ask_sprint(milestones_list)
 
     try:
         print (progress_message(1, 5, '📅  Fetching the sprint'))
@@ -139,3 +99,5 @@ def print_sprint():
         pdf = HTML(string=sourceHtml).write_pdf(f)
 
     print (success_message('Done! The pdf is ready to be printed 🖨'))
+    
+    return 0

@@ -1,0 +1,4 @@
+[run]
+omit = 
+    taiga_sprint_printer/prompts.py
+    taiga_sprint_printer/main.py
