@@ -11,7 +11,8 @@ from weasyprint import HTML
 from .configuration import Configuration
 from .messages import success_message, error_message, progress_message
 
-from .prompts import ask_credentials, ask_password, ask_project, ask_sprint, ask_file_destination
+from .prompts import ask_credentials, ask_password, \
+    ask_project, ask_sprint, ask_file_destination
 from .utils import get_current_dir
 
 

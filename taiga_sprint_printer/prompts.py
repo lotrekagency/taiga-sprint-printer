@@ -46,6 +46,7 @@ def ask_file_destination():
         file_destination = file_destination + '.pdf'
     return file_destination
 
+
 def ask_sprint(milestones_list):
     selectsprint = [
         inquirer.List(
