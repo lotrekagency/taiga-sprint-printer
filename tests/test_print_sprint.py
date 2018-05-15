@@ -92,7 +92,7 @@ class TestConfiguration:
         taiga_api = mocker.patch('taiga_sprint_printer.print_sprint.TaigaAPI')
 
         self.mocked_ask_project.return_value = 'Project 1'
-        self.mocked_ask_sprint.return_value = 'Sprint 1'
+        self.mocked_ask_sprint.return_value = '1: Sprint 1'
 
         self.mocked_ask_file_destination.return_value = 'tests/generatedstuff/test.pdf'
 
@@ -100,9 +100,9 @@ class TestConfiguration:
         milestones.append(Mock())
         milestones.append(Mock())
         milestones[0].name = 'Sprint 1'
-        milestones[0].id = 'sprint_1'
+        milestones[0].id = 1
         milestones[1].name = 'Sprint 2'
-        milestones[1].id = 'sprint_2'
+        milestones[1].id = 2
 
         taiga_api.return_value.milestones.list.return_value = milestones
 

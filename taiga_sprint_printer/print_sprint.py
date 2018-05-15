@@ -58,17 +58,19 @@ def print_sprint():
         return 1
 
     for el in milestones:
-        milestones_list.append(el.name)
+        milestones_list.append('{0}: {1}'.format(el.id, el.name))
 
     selected_sprint = ask_sprint(milestones_list)
 
     file_destination = ask_file_destination()
 
-    os.makedirs(os.path.dirname(file_destination), exist_ok=True)
+    path_destination = os.path.dirname(file_destination)
+    if path_destination:
+        os.makedirs(os.path.dirname(file_destination), exist_ok=True)
 
     try:
         print(progress_message(1, 5, '📅  Fetching the sprint'))
-        sprint = milestones.filter(name=selected_sprint)
+        sprint = milestones.filter(id=int(selected_sprint.split(': ')[0]))
         print(progress_message(2, 5, '📗  Fetching stories'))
         stories = api.user_stories.list(
             project__name=project,

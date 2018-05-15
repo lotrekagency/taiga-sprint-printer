@@ -1,5 +1,5 @@
 <html>
-    
+
     <head>
         <style>
 
@@ -29,16 +29,16 @@
 
     <body>
         {% for story in stories%}
-    
-            <div class="card story"> 
-                <h1>US #{{story.id}}</h1>
-                <h2>{{story.subject}}</h2>
+
+            <div class="card story">
+                <h2>US #{{story.id}}</h2>
+                <h3>{{story.subject}}</h3>
             </div>
                 {% for task in tasks %}
                     {% if task.user_story == story.id %}
                         <div class="card task">
-                            <h1>TASK #{{task.id}}</h1>
-                            <h2>[US #{{story.id}}]</h2>
+                            <h2>TASK #{{task.id}}</h2>
+                            <h3>[US #{{story.id}}]</h3>
                             <h3>{{task.subject}}</h3>
                         </div>
                     {% endif %}
