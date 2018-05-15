@@ -1,0 +1,14 @@
+language: python
+
+cache: pip
+
+python:
+  - "3.6"
+
+install:
+  - pip install -r requirements-dev.txt
+
+script:
+  - flake8 taiga_sprint_printer
+  - pytest -s --cov taiga_sprint_printer  --cov-report term-missing --cache-clear
+  - codecov
