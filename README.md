@@ -1,4 +1,6 @@
 # Taiga Sprint Printer
+[![Build Status](https://travis-ci.org/lotrekagency/taiga-sprint-printer.svg?branch=master)](https://travis-ci.org/lotrekagency/taiga-sprint-printer) [![codecov](https://codecov.io/gh/lotrekagency/taiga-sprint-printer/branch/master/graph/badge.svg)](https://codecov.io/gh/lotrekagency/taiga-sprint-printer)
+
 📃 A simple tool for printing your sprint from Taiga
 
 ## Install (not available yet)
