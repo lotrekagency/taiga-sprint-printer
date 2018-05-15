@@ -27,11 +27,11 @@ Taiga Sprint Printer asks you the server location and your username only the fir
 
 ## Contribute
 
-Feel free to send suggestions, open issues and create a PR to improve this software! 
+Feel free to send suggestions, open issues and create a PR to improve this software!
 
-If you want to start developing
+If you want to start developing, create a virtualenv with Python3 and install requirements
 
-    pip install -r requirements.txt
+    pip install -r requirements-dev.txt
 
 ## License
 
