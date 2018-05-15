@@ -1,7 +1,8 @@
 import os
 import shutil
 
-
+from taiga.models.base import SearchableList
+from taiga.models import UserStory, Task
 
 from taiga.exceptions import TaigaException
 
@@ -60,7 +61,6 @@ class TestConfiguration:
         self.mocked_ask_credentials.assert_not_called()
         self.mocked_ask_password.assert_called()
 
-
     def test_set_configuration_on_taiga_success(self, mocker):
         self._mock_expanduser(mocker)
         self._mock_prompts(mocker)
@@ -77,7 +77,6 @@ class TestConfiguration:
         assert c.get_config('taiga', 'host') == 'https://newhosttaiga.io/'
         assert c.get_config('taiga', 'user') == 'astagiuser'
 
-
     def test_print_sprint(self, mocker):
         self._mock_expanduser(mocker)
         self._mock_prompts(mocker)
@@ -91,9 +90,6 @@ class TestConfiguration:
 
         self.mocked_ask_project.return_value = 'Project 1'
         self.mocked_ask_sprint.return_value = 'Sprint 1'
-
-        from taiga.models.base import SearchableList
-        from taiga.models import UserStory, Task
 
         milestones = SearchableList()
         milestones.append(Mock())

@@ -63,10 +63,7 @@ def print_sprint():
 
     try:
         print(progress_message(1, 5, '📅  Fetching the sprint'))
-        print (selected_sprint)
-        sprint = api.milestones.list(
-            project=project.id
-        ).filter(name=selected_sprint)
+        sprint = milestones.filter(name=selected_sprint)
         print(progress_message(2, 5, '📗  Fetching stories'))
         stories = api.user_stories.list(
             project__name=project,

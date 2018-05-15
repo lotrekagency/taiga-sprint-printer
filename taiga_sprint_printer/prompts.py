@@ -26,7 +26,7 @@ def ask_project(current_project):
     findproject = [
         inquirer.Text(
             'project',
-            message="Taiga project", default=current_project
+            message="Taiga project slug", default=current_project
         ),
     ]
     answers = inquirer.prompt(findproject)
