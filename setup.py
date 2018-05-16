@@ -4,10 +4,12 @@ from setuptools import setup, find_packages
 package_data = ['templates/*.html']
 
 setup(
-    name='taiga_sprint_printer',
-    version='0.0.0',
-    url='https://github.com/lotrekagency/taiga-sprint-printer',
+    name='taiga-sprint-printer',
+    packages=['taiga_sprint_printer'],
+    package_dir={'taiga_sprint_printer': 'taiga_sprint_printer'},
     package_data={'taiga_sprint_printer': package_data},
+    version='0.2.0',
+    url='https://github.com/lotrekagency/taiga-sprint-printer',
     install_requires=[
         'python-taiga==0.9.0',
         'WeasyPrint==0.42.3',
@@ -19,8 +21,6 @@ setup(
     license="MIT",
     author="Lotrek",
     author_email="dimmitutto@lotrek.it",
-    packages=find_packages(),
-    include_package_data=True,
     keywords= "taiga sprint story agile planning task management",
     entry_points = {
         'console_scripts': [
@@ -31,5 +31,6 @@ setup(
         'Intended Audience :: Developers',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3'
-    ]
+    ],
+    zip_safe = False,
 )

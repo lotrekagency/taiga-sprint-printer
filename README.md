@@ -1,4 +1,5 @@
 # Taiga Sprint Printer
+[![Latest Version](https://img.shields.io/pypi/v/taiga_sprint_printer.svg)](https://pypi.python.org/pypi/taiga_sprint_printer/)
 [![Build Status](https://travis-ci.org/lotrekagency/taiga-sprint-printer.svg?branch=master)](https://travis-ci.org/lotrekagency/taiga-sprint-printer) [![codecov](https://codecov.io/gh/lotrekagency/taiga-sprint-printer/branch/master/graph/badge.svg)](https://codecov.io/gh/lotrekagency/taiga-sprint-printer)
 
 📃 A simple tool for printing your sprint from Taiga
