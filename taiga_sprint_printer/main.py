@@ -1,5 +1,6 @@
 import argparse
 
+from .change_colors import change_colors
 from .errors import CancelledByUserError
 from .print_sprint import print_sprint
 
@@ -16,6 +17,9 @@ def main():
     )
     args = parser.parse_args()
     try:
-        print_sprint(args.command == 'new')
+        if args.command == 'colors':
+            change_colors()
+        else:
+            print_sprint(args.command == 'new')
     except CancelledByUserError as ex:
         pass

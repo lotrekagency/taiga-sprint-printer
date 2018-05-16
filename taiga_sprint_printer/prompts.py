@@ -75,16 +75,17 @@ def ask_sprint(milestones_list):
     return answers['sprint']
 
 
-# def ask_colors(default_us_color, default_task_color):
-#     questions = [
-#         inquirer.Text(
-#             'us_color', message="Your taiga api host", default=default_host
-#         ),
-#         inquirer.Text(
-#             'Task color', message="Your taiga username", default=default_user
-#         ),
-#         inquirer.Password('password', message="Your taiga password"),
-#     ]
-#     answers = inquirer.prompt(questions)
-#     check_answer(answers)
-#     return answers['host'], answers['user'], answers['password']
+def ask_colors(default_us_color, default_task_color):
+    questions = [
+        inquirer.Text(
+            'us_color',
+            message="Default color for user stories", default=default_us_color
+        ),
+        inquirer.Text(
+            'task_color',
+            message="Default color for tasks", default=default_task_color
+        ),
+    ]
+    answers = inquirer.prompt(questions)
+    check_answer(answers)
+    return answers['us_color'], answers['task_color']
