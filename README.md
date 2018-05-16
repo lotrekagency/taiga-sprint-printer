@@ -3,7 +3,7 @@
 
 📃 A simple tool for printing your sprint from Taiga
 
-## Install (not available yet)
+## Install
 
 🐍 You need `Python3` to run this program
 
@@ -13,17 +13,17 @@
 
     sprint-printer
 
-## Set the color for user stories and tasks (not available yet)
+## Set the color for user stories and tasks
 
 Taiga sprint printer has two default colors, 🔴`red` for user stories and 🔵`blue` for tasks. If you want to change these values run:
 
     sprint-printer colors
 
-## Reset account configuration (not available yet)
+## Reset account configuration
 
-Taiga Sprint Printer asks you the server location and your username only the first time. If you want to change these settings launch sprint-printer with the `account` option:
+Taiga Sprint Printer asks you the server location and your username only the first time. If you want to change these settings launch sprint-printer with the `new` option:
 
-    sprint-printer account
+    sprint-printer new
 
 ## Contribute
 
