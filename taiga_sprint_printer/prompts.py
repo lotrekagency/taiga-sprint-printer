@@ -8,10 +8,14 @@ def check_answer(answers):
         raise CancelledByUserError()
 
 
-def ask_credentials():
+def ask_credentials(default_host, default_user):
     questions = [
-        inquirer.Text('host', message="Your taiga api host"),
-        inquirer.Text('user', message="Your taiga username"),
+        inquirer.Text(
+            'host', message="Your taiga api host", default=default_host
+        ),
+        inquirer.Text(
+            'user', message="Your taiga username", default=default_user
+        ),
         inquirer.Password('password', message="Your taiga password"),
     ]
     answers = inquirer.prompt(questions)
@@ -69,3 +73,18 @@ def ask_sprint(milestones_list):
     answers = inquirer.prompt(selectsprint)
     check_answer(answers)
     return answers['sprint']
+
+
+# def ask_colors(default_us_color, default_task_color):
+#     questions = [
+#         inquirer.Text(
+#             'us_color', message="Your taiga api host", default=default_host
+#         ),
+#         inquirer.Text(
+#             'Task color', message="Your taiga username", default=default_user
+#         ),
+#         inquirer.Password('password', message="Your taiga password"),
+#     ]
+#     answers = inquirer.prompt(questions)
+#     check_answer(answers)
+#     return answers['host'], answers['user'], answers['password']

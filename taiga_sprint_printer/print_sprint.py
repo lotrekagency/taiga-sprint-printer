@@ -16,7 +16,7 @@ from .prompts import ask_credentials, ask_password, \
 from .utils import get_current_dir
 
 
-def print_sprint():
+def print_sprint(new=False):
 
     configuration = Configuration()
 
@@ -25,8 +25,10 @@ def print_sprint():
 
     templates_path = os.path.join(get_current_dir(), 'templates')
 
-    if host and user:
+    if not new and host and user:
         password = ask_password(user)
+    elif new:
+        host, user, password = ask_credentials(host, user)
     else:
         host, user, password = ask_credentials()
 
