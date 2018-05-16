@@ -15,7 +15,7 @@ setup(
         'inquirer==2.2.0'
     ],
     description="A simple tool for printing your sprint from Taiga",
-    long_description=open('README.md', 'r').read(),
+    long_description=open('README.rst', 'r').read(),
     license="MIT",
     author="Lotrek",
     author_email="dimmitutto@lotrek.it",
