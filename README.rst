@@ -1,7 +1,7 @@
 Taiga Sprint Printer
 ====================
 
-|Build Status| |codecov|
+|Latest Version| |Build Status| |codecov|
 
 📃 A simple tool for printing your sprint from Taiga
 
@@ -60,6 +60,8 @@ License
 
 MIT - Lotrèk 2018
 
+.. |Latest Version| image:: https://img.shields.io/pypi/v/taiga_sprint_printer.svg
+   :target: https://pypi.python.org/pypi/taiga_sprint_printer/
 .. |Build Status| image:: https://travis-ci.org/lotrekagency/taiga-sprint-printer.svg?branch=master
    :target: https://travis-ci.org/lotrekagency/taiga-sprint-printer
 .. |codecov| image:: https://codecov.io/gh/lotrekagency/taiga-sprint-printer/branch/master/graph/badge.svg
