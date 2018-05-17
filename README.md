@@ -4,6 +4,10 @@
 
 📃 A simple tool for printing your sprint from Taiga
 
+## Watch the video
+
+[![Watch the video](https://img.youtube.com/vi/2NfSVBbZzys/0.jpg)](https://youtu.be/2NfSVBbZzys)
+
 ## Install
 
 🐍 You need `Python3` to run this program
