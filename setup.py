@@ -8,7 +8,7 @@ setup(
     packages=['taiga_sprint_printer'],
     package_dir={'taiga_sprint_printer': 'taiga_sprint_printer'},
     package_data={'taiga_sprint_printer': package_data},
-    version='0.2.0',
+    version='0.2.1',
     url='https://github.com/lotrekagency/taiga-sprint-printer',
     install_requires=[
         'python-taiga==0.9.0',
