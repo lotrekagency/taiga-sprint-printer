@@ -83,6 +83,21 @@ class TestConfiguration:
         self.mocked_ask_credentials.assert_called()
         self.mocked_ask_password.assert_not_called()
 
+    def test_print_with_no_configuration(self, mocker):
+        self._mock_expanduser(mocker)
+        self._mock_prompts(mocker)
+
+        self.mocked_ask_credentials.return_value = (
+            'https://notexistingtaiga.io/',
+            'astagi',
+            '1t54s3cr3t'
+        )
+
+        assert print_sprint(False) == 1
+
+        self.mocked_ask_credentials.assert_called_with(None, None)
+        self.mocked_ask_password.assert_not_called()
+
     def test_set_configuration_on_taiga_success(self, mocker):
         self._mock_expanduser(mocker)
         self._mock_prompts(mocker)

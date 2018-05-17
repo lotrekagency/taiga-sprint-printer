@@ -30,7 +30,7 @@ def print_sprint(new=False):
     elif new:
         host, user, password = ask_credentials(host, user)
     else:
-        host, user, password = ask_credentials()
+        host, user, password = ask_credentials(host, user)
 
     try:
         api = TaigaAPI(
