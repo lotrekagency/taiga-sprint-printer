@@ -1,4 +1,4 @@
 python-taiga==0.9.0
 WeasyPrint==0.42.3
-Jinja2==2.10
+Jinja2==2.11.3
 inquirer==2.2.0
