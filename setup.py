@@ -13,7 +13,7 @@ setup(
     install_requires=[
         'python-taiga==0.9.0',
         'WeasyPrint==0.42.3',
-        'Jinja2==2.10',
+        'Jinja2==2.11.3',
         'inquirer==2.2.0'
     ],
     description="A simple tool for printing your sprint from Taiga",
